@@ -38,6 +38,9 @@ server.post('/api/register', (req, res) => {
     userInfo.password = hash;
     db('users').insert(userInfo).then( ids => {
       res.status(201).json(ids);
+      console.log(hash);
+      console.log(userInfo);
+      console.log('api/register working correctly');
     }).catch(err => res.status(500).json(err));
     
   });
@@ -70,7 +73,7 @@ server.post('/api/login', (req,res) => {
         if (user && bcrypt.compareSync(creds.password, user.password)) {
   
           const token = generateUserToken(user);
-          res.status(200).json({message: `Welcome ${user.name} !`, token: token});
+          res.status(200).json({message: `Welcome ${user.username} !`, token: token});
         } else {
           res.status(401).json({message:`You are not authorized to login!`})
         }
@@ -102,7 +105,8 @@ server.post('/api/login', (req,res) => {
     if(protected) {
       db('users').then(allUsers => {
         res.status(200).json(allUsers);
-      }).catch( err => { res.status(500).json({error:`failed to return Users!`})
+      }).catch( err => { 
+        res.status(500).json({error:`failed to return Users!`})
     })
     } else {
       res.status(401).json({message:`Access Denied!`});
