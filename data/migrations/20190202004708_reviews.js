@@ -10,16 +10,29 @@ exports.up = function(knex, Promise) {
 
         tbl.string('reviewer', 128).notNullable();
 
-        tbl.integer('books_id').unsigned().notNullable()
-            .references('id').inTable('books');
+        tbl.integer('books_id')
+            .unsigned()
+            .notNullable()
+            .references('id')
+            .inTable('books');
 
-        tbl.integer('users_id', 128).unsigned().notNullable()
-            .references('id').inTable('users');
+        tbl.integer('users_id', 128)
+            .unsigned()
+            .notNullable()
+            .references('id')
+            .inTable('users');
 
-        tbl.string('username', 255).unsigned().notNullable()
-        .references('username').inTable('users');
+        tbl.string('username', 255)
+            .unsigned()
+            .notNullable()
+            .references('username')
+            .inTable('users');
 
-        tbl.string('titlename', 355).unsigned().notNullable().references('title').inTable('books');
+        tbl.string('titlename', 355)
+            .unsigned()
+            .notNullable()
+            .references('title')
+            .inTable('books');
 
         tbl.timestamp(true, true);
     });
@@ -27,5 +40,7 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
+
+    return knex.schema.dropTableIfExists ('reviews');
   
 };

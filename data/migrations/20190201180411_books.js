@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
 
     return knex.schema.createTable('books', tbl => {
-        
+
         tbl.increments();
     
         tbl.string('title', 355).notNullable().unique();
@@ -12,8 +12,6 @@ exports.up = function(knex, Promise) {
         tbl.string('publisher', 255).notNullable();
 
         tbl.string('summary', 600);
-    
-        // tbl.string('reviews', 555);
     
         tbl.timestamp(true, true);
       });
