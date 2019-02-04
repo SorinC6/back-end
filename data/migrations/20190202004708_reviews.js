@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
 
         tbl.string('review', 600).notNullable();
 
-        tbl.integer('rating',1).notNullable();
+        tbl.integer('rating').notNullable();
 
         tbl.string('reviewer', 128).notNullable();
 
@@ -16,23 +16,22 @@ exports.up = function(knex, Promise) {
             .references('id')
             .inTable('books');
 
-        tbl.integer('users_id', 128)
-            .unsigned()
-            .notNullable()
-            .references('id')
-            .inTable('users');
+        // tbl.integer('users_id', 128)
+        //     .unsigned()
+        //     .references('id')
+        //     .inTable('users');
 
-        tbl.string('reviewerName', 255)
-            .unsigned()
-            .notNullable()
-            .references('username')
-            .inTable('users');
+        // tbl.string('reviewerName', 255)
+        //     .unsigned()
+        //     .notNullable()
+        //     .references('username')
+        //     .inTable('users');
 
-        tbl.string('titlename', 355)
-            .unsigned()
-            .notNullable()
-            .references('title')
-            .inTable('books');
+        // tbl.string('titlename', 355)
+        //     .unsigned()
+        //     .notNullable()
+        //     .references('title')
+        //     .inTable('books');
 
         tbl.timestamp(true, true);
     });
