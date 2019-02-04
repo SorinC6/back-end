@@ -6,6 +6,7 @@ const morganLogger = require('morgan');
 const bcrypt = require('bcryptjs'); // added
 const jwt = require('jsonwebtoken');
 const demoRouter = require('../allRoutes/demoRoutes');
+const protectedRTS = require('../allRoutes/protectedRoutes');
 const db = require('../data/dbconfig');
 
 
@@ -18,7 +19,8 @@ server.use(helmet());
 server.use(cors());
 server.use(morganLogger('short'));
 server.use(express.json());
-server.use('/demo/api', demoRouter)
+server.use('/demo/api', demoRouter);
+server.use('/api/protected/', protectedRTS);
 
 
 server.get('/', (req, res) => {
@@ -50,17 +52,16 @@ server.post('/api/register', (req, res) => {
     const payload = {
       username: user.username,
       password: user.pasword,
-      role: user.role,
     };
 
   const secret = process.env.JWT_SECRET;
 
   const options= {
-    expiresIn: '60m',
+    expiresIn: '7d',
 
   }
 
-  return jwt.sign(payload,secret, options);
+  return jwt.sign(payload, secret, options);
 }
 
 
