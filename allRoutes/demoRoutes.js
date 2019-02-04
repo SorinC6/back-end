@@ -242,7 +242,7 @@ router.post('/reviews', (req,res) => {
     const reviewInfo = req.body;
     const { id } = req.params;
     // console.log( { title, author, publisher, summary });
-    console.log({ review, rating, reviewer }, reviewInfo, { id });
+    console.log({ review, rating, reviewer }, reviewInfo );
     
         if (!review) {
             res.status(400).json({ Error: "Please put an accurate review" });
@@ -256,7 +256,7 @@ router.post('/reviews', (req,res) => {
         
         db('reviews').insert({ review, rating, reviewer })
             .then(newReview => { 
-                console.log({ review, rating, reviewer }, reviewInfo, { id });
+                console.log({ review, rating, reviewer }, reviewInfo);
                 if (newReview) {
                     res.status(201).json(newReview);
                 } else {
@@ -271,7 +271,7 @@ router.post('/reviews', (req,res) => {
 
 
 
-// router.post("/games", (req, res) => {
+// router.post("/", (req, res) => {
     
 //     const { title, genre } = req.body;
 //     const game = req.body;

@@ -22,7 +22,7 @@ exports.up = function(knex, Promise) {
             .references('id')
             .inTable('users');
 
-        tbl.string('username', 255)
+        tbl.string('reviewerName', 255)
             .unsigned()
             .notNullable()
             .references('username')
