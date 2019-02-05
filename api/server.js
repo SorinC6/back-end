@@ -69,17 +69,12 @@ server.post("/api/login", (req, res) => {
     .where({ username: creds.username })
     .first()
     .then(user => {
-      console.log(user);
-      console.log("this is user password", user.password);
-      console.log("this is creds password", creds.password);
       if (user && bcrypt.compareSync(creds.password, user.password)) {
-        console.log("i am in the if statement");
         const token = generateUserToken(user);
+        console.log("this is the token", token);
         res
           .status(200)
           .json({ message: `Welcome ${user.username} !`, token: token });
-      } else {
-        res.status(401).json({ message: `You are not authorized to login!` });
       }
     })
     .catch(err => {
