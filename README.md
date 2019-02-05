@@ -37,6 +37,12 @@ it generates a token that can be either saved in stat or save locally as the
     "role": 0
 	
 }
+{
+	"username": "kenneth",
+	"password": "password",
+    "role": 1
+	
+}
 
 
 /api/users

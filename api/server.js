@@ -45,7 +45,7 @@ server.post('/api/register', (req, res) => {
       console.log(hash);
       console.log(userInfo);
       console.log('api/register working correctly');
-    }).catch(err => res.status(500).json(err));
+    }).catch(err => res.status(500).json({Error: `You have not been Registered.`}));
     
   });
   
