@@ -6,6 +6,7 @@ const morganLogger = require('morgan');
 const bcrypt = require('bcryptjs'); // added
 const jwt = require('jsonwebtoken');
 const demoRouter = require('../allRoutes/demoRoutes');
+const demooRouter = require('../allRoutes/demoRoutes');
 const protectedRTS = require('../allRoutes/protectedRoutes');
 const db = require('../data/dbconfig');
 
@@ -20,6 +21,7 @@ server.use(cors());
 server.use(morganLogger('short'));
 server.use(express.json());
 server.use('/demo/api', demoRouter);
+server.use('/demoo/api', demooRouter);
 server.use('/api/protected/', protectedRTS);
 
 
