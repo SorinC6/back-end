@@ -238,14 +238,15 @@ router.get('/books/:id', (req, res) => {
 });
 
 router.post('/reviews', (req,res) => {
-    const { review, rating, reviewer } = req.body;
-    const reviewInfo = req.body;
-    const { id } = req.params;
+    const { review, rating, reviewer, books_id } = req.body;
+    const reviewInfo = { review, rating, reviewer, books_id  };
+    // const { id } = req.params;
+    console.log(reviewInfo);
     // console.log( { title, author, publisher, summary });
-    console.log({ review, rating, reviewer }, reviewInfo );
+    // console.log({ review, rating, reviewer }, reviewInfo );
     
         if (!review) {
-            res.status(400).json({ Error: "Please put an accurate review" });
+            res.status(400).json({ Error: "Please put an accurate review." });
         } 
         if (!rating || rating < 0 || rating > 5 || Math.floor(rating) !== rating ) {
             res.status(400).json({ Error: "Please provide rating in your input. It must be an integer from 0 to 5 only."});
@@ -254,18 +255,20 @@ router.post('/reviews', (req,res) => {
             return res.status(400).json({ Error: 'You need to add a reviewer name.' });
         }
         
-        db('reviews').insert({ review, rating, reviewer })
+        db('reviews').insert(reviewInfo)
             .then(newReview => { 
-                console.log({ review, rating, reviewer }, reviewInfo);
-                if (newReview) {
-                    res.status(201).json(newReview);
-                } else {
-                    res.status(404).json({ Error: 'Please add all the nessesary fields correcly!' })
+                // console.log({ review, rating, reviewer }, reviewInfo);
+                console.log(newReview);
+                res.status(201).json(newReview);
+                // if (newReview) {
+                //     res.status(201).json(newReview);
+                // } else {
+                //     res.status(404).json({ Error: 'Please add all the nessesary fields correcly!' })
 
-                }
+                // }
             })
             .catch(err => {
-                res.status(500).json({Error: 'The new review was not added'});
+                res.status(500).json({Error: 'The new review was not added', err });
             });
 });
 
@@ -289,17 +292,6 @@ router.post('/reviews', (req,res) => {
 //     });
 
 //   });
-
-
-//++++++++++++++++++++++++++++++++++++++++++
-// All UPDATE  endpoints -- 
-//++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++
-// All DELETE  endpoints -- 
-//++++++++++++++++++++++++++++++++++++++++++++
 
 
   module.exports = router;

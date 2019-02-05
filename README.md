@@ -3,10 +3,9 @@
 ## register/Signup =
 endpoint:
 post request to:
-/api/register
+`/api/register`
 
-expects an object with  a username(string), 
-password(string), 
+expects an object with  a username(string), password(string), 
 and role(integer either 0 or 1, --0 for customers and 1 for admin--)
 
 {
@@ -20,10 +19,10 @@ and role(integer either 0 or 1, --0 for customers and 1 for admin--)
 ## login/Signin =
 endpoint:
 post request to:
-/api/login
+`/api/login`
 
-expects an object with  a username(string), 
-password(string), 
+expects an object with  a username(string), password(string), 
+it generates a token that can be either saved in stat or save locally as the
 
 {
 	"username":"me",
@@ -53,23 +52,33 @@ password(string),
 
 There are currently Demo endpoint you can use to get reviews and books 
 get:
-/demo/api/reviews
-
-
+`/demo/api/reviews`
+to post reviews pasws an abject with the review(string), rating(integer), reviewer(string), and books_id(string)properties included. it  should ook like the following
+`/demo/api/reviews`
 {
-	"review": "Sdfgfaddfgsdfg d hsdhjhrtw  thw err",
-	"rating": 2,
-	"reviewer": "just me"
+	"review": "Sdf gfah dd gsdf",
+	"rating": 4,
+	"reviewer": "juste",
+	"book_id" : 1
 	
 }
 
-/demo/api/books
-the id i s automatically incremented. 
+`/demo/api/books`
+the id is automatically incremented. 
+but you must implement string values for title, author, publisher.
+when posting a books info the Summary section(string data) is optional and null will be place if no data is put in.
+
+{
+        "title": "C++ for all",
+        "author": "Prof. SmartyPants",
+        "publisher": "Tech book inc",
+        "summary": "more stuff"
+    }
 
 To GET a specific book 
-/demo/api/books/:id
+`/demo/api/books/:id`
 example:
-/demo/api/books/1
+`/demo/api/books/1`
 
 [
     {
@@ -98,18 +107,12 @@ example:
     }
 ]
 
-when posting a books info the Summary section is optional and null will be place if no data is put in.
-/demo/api/books
-
-{
-        "title": "C++ for all",
-        "author": "Prof. SmartyPants",
-        "publisher": "Tech book inc",
-        "summary": "more stuff"
-    }
 
 
-/users/:id
+`/demo/api/users/:id`
+to get request specific user data you will need the id of the user,
+or simple input the beloww to get them all.
+`/demo/api/users`
 
 The user is an aray stucture of user objects like whats listed below.
 
