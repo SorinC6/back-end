@@ -195,7 +195,45 @@ router.post('/reviews', protected, (req,res) => {
 // All DELETE  endpoints -- 
 //++++++++++++++++++++++++++++++++++++++++++++
 
+router.delete('/books/:id', protected, (req,res) => {
+    const { id } = req.params;
 
+    db('books').where('id', id).first().then(book => {
+        console.log(`Book with id:${id} found!`);
+        db('books').where('id', id).del().then(result => {
+            if(result) {
+                res.status(204).json({Delete: true, book });
+                console.log(`Book with id: ${id} Deleted!`);
+            } else {
+                res.status(400).json({ Error: 'The Book Was Not Deleted' });
+            }
+        }).catch(err => {
+            res.status(500).json({Error: ``});
+        });
+    }).catch(err => {
+        res.status(500).json({Error: ``})
+    });
+  });
+
+  router.delete('/reviews/:id', protected, (req,res) => {
+    const { id } = req.params;
+
+    db('reviews').where('id', id).first().then(review => {
+        console.log(`Book with id:${id} found!`);
+        db('reviews').where('id', id).truncate().then(result => {
+            if(result) {
+                console.log(`Book with id: ${id} Deleted!`);
+                res.status(204).json({Delete: true, review });
+            } else {
+                res.status(400).json({ Error: `The Book with id #${id} Was Not Deleted` });
+            }
+        }).catch(err => {
+            res.status(500).json({Error: ``});
+        });
+    }).catch(err => {
+        res.status(500).json({Error: ``})
+    });
+  });
 
 
   module.exports = router;
