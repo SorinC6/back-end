@@ -67,9 +67,13 @@ server.post("/api/login", (req, res) => {
 
   db("users")
     .where({ username: creds.username })
+    .first()
     .then(user => {
       console.log(user);
+      console.log("this is user password", user.password);
+      console.log("this is creds password", creds.password);
       if (user && bcrypt.compareSync(creds.password, user.password)) {
+        console.log("i am in the if statement");
         const token = generateUserToken(user);
         res
           .status(200)
