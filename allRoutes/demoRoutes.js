@@ -133,6 +133,12 @@ router.get('/books/:id', (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++
 
 
+
+
+
+
+
+
 // router.get('/books/:id/reviews', (req, res) => {
 //     const { id } = req.params;
 
@@ -150,6 +156,24 @@ router.get('/books/:id', (req, res) => {
 //         res.status(500).json({ Error: 'Failure, no Book! Try again.' })
 //     });
 // });
+
+// router.get('books/:id/reviews', (req,res) => {
+//     const { id } = req.params;
+//     db.update('reviews as r')
+//         .join('books as b', 'b.id', 'r.books_id')
+//         .select('b.title', 'b.author', 'r.id', 'r.review', 'b.rating', 'b.reviewer' )
+//         .where('r.id',id)
+//         .then()
+// })
+
+
+
+
+
+
+
+
+
 
 // router.get('/user/:id/reviews', (req, res) => {
 //     const { id } = req.params;
