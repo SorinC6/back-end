@@ -173,39 +173,6 @@ router.get('/books/:id', (req, res) => {
 // All post endpoints -- post book and post reviews
 //++++++++++++++++++++++++++++++++++++++++++++
 
-
-// router.post("/books", (req, res) => {
-//     const { title, author, publisher, summary } = req.body;
-//     const { id } = req.params;
-  
-//     db('books').insert({ title, author, publisher, summary })
-//       .then(result => {
-//         // check if result is an array with a number
-//         if (typeof result[0] === "number" && result[0] !== 0) {
-//             db.getDish(result[0])
-//             .then(dish => {
-//               if (dish.name) {
-//                 res.status(201).json({ dish });
-//               } else {
-//                 res
-//                   .status(400)
-//                   .json({ error: "Dish was not created, try again" });
-//               }
-//             })
-//             .catch(err => {
-//               res.status(500).json({ error: "Error! Please try again." });
-//             });
-//         } else {
-//           res
-//             .status(401)
-//             .json({ error: "Error! No input!" });
-//         }
-//       })
-//       .catch(err => {
-//         res.status(500).json({ error: "Error! Please try again." });
-//       });
-//   });
-
   router.post('/books', (req,res) => {
     const { title, author, publisher, summary } = req.body;
     const bookInfo = req.body;
@@ -273,25 +240,144 @@ router.post('/reviews', (req,res) => {
 });
 
 
+//++++++++++++++++++++++++++++++++++++++++++
+// All DELETE  endpoints -- 
+//++++++++++++++++++++++++++++++++++++++++++++
 
-// router.post("/", (req, res) => {
+
+router.delete('/books/:id', (req,res) => {
+    const { id } = req.params;
+
+    db('books').where('id', id).first().then(book => {
+        console.log(`Book with id:${id} found!`);
+        db('books').where('id', id).del().then(result => {
+            if(result) {
+                res.status(204).json({Delete: true, book });
+                console.log(`Book with id: ${id} Deleted!`);
+            } else {
+                console.log(`Book with id: ${id} was not Deleted!`);
+                res.status(400).json({ Error: 'The Book Was Not Deleted' });
+            }
+        }).catch(err => {
+            res.status(500).json({Error: ``});
+        });
+    }).catch(err => {
+        res.status(500).json({Error: ``})
+    });
+  });
+
+  router.delete('/reviews/:id', (req,res) => {
+    const { id } = req.params;
+
+    db('reviews').where('id', id).first().then(review => {
+        console.log(`Review with id:${id} found!`);
+        db('reviews').where('id', id).truncate().then(result => {
+            if(result) {
+                console.log(`Review with id: ${id} Deleted!`);
+                res.status(204).json({Delete: true, review });
+            } else {
+                res.status(400).json({ Error: `The Book with id #${id} Was Not Deleted` });
+            }
+        }).catch(err => {
+            res.status(500).json({Error: ``});
+        });
+    }).catch(err => {
+        res.status(500).json({Error: ``})
+    });
+  });
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++
+// All UPDATE  endpoints -- 
+//++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+router.put("/books/:id", (req, res) => {
+    const { id } = req.params;
+    // const { review, rating, reviewer, books_id } = req.body;
+    // const reviewInfo = { review, rating, reviewer, books_id  };
+    // const {} = req.body;
+    const changes = req.body;
+  
+    db('books').where({ id }).first().then( result => {
+        if (!result) {
+            res
+            .status(404)
+            .json({ Error: `The book with the specified ID: ${id} does not exist.` });
+        }
+        if (!changes.title || !changes.author || !changes.publisher || !changes.summary) {
+            res.status(400).json({
+              Error: `Please provide title author Publisher and summary you'd like to Update.`
+            });
+          }
+          if (result) {
+              db('books').where('id', id).update(changes).then(editedBook => {
+                  if(editedBook){
+                      res.status(203).json({editedBook});
+                  } else {
+                    res.status(400).json({
+                        error: "Please check your input and try to edit the book again."
+                      });
+                  }
     
-//     const { title, genre } = req.body;
-//     const game = req.body;
+              }).catch(err =>
+                res
+                  .status(500)
+                  .json({ error: "The post information could not be modified." }));
 
-//     if (!title || !genre) {
-//     res.status(422).json({ Error: 'Please add the title and genre' });
-//     }
-//     db('games')
-//     .insert(game)
-//     .then(eachGame => {
-//       res.status(201).json({ message: 'New game added' });
-//     })
-//     .catch(err => {
-//       res.status(500).json({Error: 'Error inserting'});
-//     });
+          }
+    }).catch(err =>
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+      );
+  });
 
-//   });
+  router.put("/reviews/:id", (req, res) => {
+    const { id } = req.params;
+    // const { review, rating, reviewer } = req.body;
+    // const reviewInfo = { review, rating, reviewer };
+    // const {} = req.body;
+    const changes = req.body;
+  
+    db('reviews').where({ id }).first().then( result => {
+        if (!result) {
+            res
+            .status(404)
+            .json({ Error: `The review with the specified ID: ${id} does not exist.` });
+        }
+        if (!changes.review || !changes.rating || !changes.reviewer ) {
+            res.status(400).json({
+              Error: `Please provide review rating and reviewer you'd like to Update.`
+            });
+          }
+          if (result) {
+              db('reviews').where('id', id).update(changes).then(editedReview => {
+                  if(editedReview){
+                      res.status(203).json({editedReview});
+                  } else {
+                    res.status(400).json({
+                        error: "Please check your input and try to edit the review again."
+                      });
+                  }
+    
+              }).catch(err =>
+                res
+                  .status(500)
+                  .json({ error: "The post information could not be modified." }));
+
+          }
+    }).catch(err =>
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+      );
+  });
+
+
+
 
 
   module.exports = router;

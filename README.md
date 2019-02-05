@@ -68,6 +68,18 @@ to post reviews pasws an abject with the review(string), rating(integer), review
 	"book_id" : 1
 	
 }
+to update a review use endpoint `/demo/api/reviews/:id` 
+`/demo/api/reviews/4` 
+you will need to include review(string), rating(integer) and reviewer(string).
+example below:
+
+{
+      
+        "review": "everything newer",
+        "rating": 5,
+        "reviewer": "new person"
+    }
+
 
 `/demo/api/books`
 the id is automatically incremented. 
