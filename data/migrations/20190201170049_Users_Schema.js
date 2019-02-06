@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
         // user is 0 and admin  true
         // false 0 empty string nan
     
-        tbl.timestamp(true, true);
+        tbl.timestamps(true, true);
       });
   
 };

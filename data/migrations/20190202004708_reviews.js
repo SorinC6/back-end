@@ -33,7 +33,7 @@ exports.up = function(knex, Promise) {
         //     .references('title')
         //     .inTable('books');
 
-        tbl.timestamp(true, true);
+        tbl.timestamps(true, true);
     });
   
 };
