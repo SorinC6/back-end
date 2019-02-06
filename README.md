@@ -143,3 +143,74 @@ The user is an aray stucture of user objects like whats listed below.
         "true": null
     }
 ]
+
+## Running
+`npm run server`, `yarn server`: Runs the Dev back-end server.
+
+`yarn start` : Runs only the back-end server.
+
+# Environment Variables
+
+# Tech-Stack
+
+## Back-End Dependencies ```(Production)```
+
+### BcryptJS
+
+Bcrypt is an adaptive hash function which adjusts the cost of hashing, which means that in the future as computers become more powerful, simply increasing the salt rounds will suffice at keeping Main Course secure due to the amount of processing time that would be required to generate all possible password combinations. | [View Dependency](https://www.npmjs.com/package/bcryptjs)
+
+### Cors
+
+Used to configure API security. This was used to allow for secure communication between the front-end and back-end servers. | [View Dependency](https://github.com/expressjs/cors)
+
+### ExpressJS
+
+A prebuilt NodeJS framework that makes creating server side applications simple, fast, and flexible. NodeJS is powered by Google's V8 Engine which means it's powerful and can handle a large number of requests without lapsing in dependability. Also, this means that this is a highly scalable choice when you consider the Event Loop which manages all asynchronous operations allowing the program to continue to run as expected without stops. | [View Dependency](http://expressjs.com/)
+
+### Helmet
+
+A collection of nine smaller middleware functions that set security-related HTTP headers appropriatley. This protects Main Course from numerous well known vulnerablilites. | [View Dependency](https://helmetjs.github.io/)
+
+### JSON Web Token
+
+Realizing that there is not inherent benefit to using tokens over sessions, we chose to implement jwts due to the added benefit of storing the session on the client side as opposed to being in-memory. Main Course is built with the active server in mind and the potential to have the application be accessed from various devices in different locations. With this, instead of running the risk of having a session be interrupted due to data roaming, connection issues, or server side problems, we chose to store the session information on the client side. We also found this to be more efficient for our needs, as jwts eliminate the need to fetch additional information from the DB to validate the user. | [View Dependency](https://www.npmjs.com/package/jsonwebtoken)
+
+## Back-End Dependencies ```(Development)```
+
+### Dotenv
+
+Dotsenv allows us to universally set environment variables. | [View Dependency](https://www.npmjs.com/package/dot-env)
+
+### Sqlite3
+
+
+### Jest
+
+Chosen for its out of the box readiness. Jest comes with inbuilt mocking, the ability to run tests in parallel, it works with both the front-end and back-end, has promise support, and is a one stop shop for most testing needs within the scope of this project. | [View Dependency](https://jestjs.io/)
+
+### Morgan
+
+An HTTP request logging middleware used for production to easily identify bugs in routes. | [View Dependency](https://github.com/expressjs/morgan)
+
+### Nodemon
+
+Automatically restarts the server on save making production more efficient. | [View Dependency](https://nodemon.io/)
+
+### Supertest
+
+Using supertest with jest for integration testing makes things easy to implement and easy to read. | [View Dependency](https://www.npmjs.com/package/supertest)
+
+
+## Backend API
+
+### Auth Token Payload
+
+The JWT payload will look like this:
+
+```
+{
+  username: "usersname",
+  password: "random hashed password"
+  role: 
+};
+```

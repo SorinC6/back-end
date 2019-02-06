@@ -13,7 +13,7 @@ exports.up = function(knex, Promise) {
 
         tbl.string('summary', 600);
     
-        tbl.timestamp(true, true);
+        tbl.timestamps(true, true);
       });
   
 };
