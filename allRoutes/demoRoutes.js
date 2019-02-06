@@ -94,6 +94,43 @@ router.get('/books/:id', (req, res) => {
     .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
 });
 
+
+router.get('/books/:id/all', (req, res) => {
+    const { id } = req.params;
+    db('books').where('id', id ).then( thisBook => {
+        console.log(thisBook);
+        db('reviews')
+                .where({ books_id: req.params.id })
+                .then(eachReview => {
+                    console.log(eachReview);
+                const convertedReview = eachReview.map(w => {
+                 console.log("w",w);
+                 return w;
+                    // {id: w.id}
+                    // , 
+                    // review = w.review, 
+                    // rating = w.rating, 
+                    // reviewer = w.reviewer, 
+                    // books_id = w.books_id 
+                });
+
+                console.log('this is converted Review',convertedReview);
+                res.status(200)
+                    .json({ id: thisBook[0].id, 
+                        title: thisBook[0].title, 
+                        author: thisBook[0].author, 
+                        publisher: thisBook[0].publisher, 
+                        summary: thisBook[0].summary, 
+                        true: thisBook[0].true, 
+                        bookReviews: convertedReview });
+
+        }).catch(err => res.status(404).json({ Error: "No Reviews found for that book in the system "}))
+                    //    res.status(200).json(thisBook);
+        
+    })
+    .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
+});
+
 //++++++++++++++++++++++++++++++++++++++++++
 // Get the reviews by the user_id
 // Get the reviews by the book_id
@@ -140,8 +177,34 @@ router.get('/books/:id', (req, res) => {
 
 
 // router.get('/books/:id/reviews', (req, res) => {
+//     router.get('/books/:id', (req, res) => {
+//         const { id } = req.params;
+//         db('books').where({ id }).first().then( thisBook => {
+//             if (thisBook) {
+
+
+
+
+
+
+
+
+
+//                 res.status(200).json(thisBook);
+//             } else {
+//                 res.status(404).json({ Error: 'Error! No Book exists with that id in the System.'});
+//             }
+//         })
+//         .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
+//     });
+    
+
+
+
+
 //     const { id } = req.params;
 
+//     db('books').
 //     db('reviews').where('books_id', id).then(reviews =>{
 //         reviews.map( eachReview => {
 //              return { ...eachReview }
@@ -153,7 +216,7 @@ router.get('/books/:id', (req, res) => {
 //             res.status(200).json(thisList);
 //         }
 //     }).catch(err => {
-//         res.status(500).json({ Error: 'Failure, no Book! Try again.' })
+//         res.status(500).json({ Error: 'Failure, no Reviews! Try again.' })
 //     });
 // });
 
