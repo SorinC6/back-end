@@ -49,7 +49,7 @@ server.post("/api/register", (req, res) => {
 function generateUserToken(user) {
   const payload = {
     username: user.username,
-    password: user.pasword
+    password: user.password
   };
 
   const secret = process.env.JWT_SECRET;
