@@ -6,7 +6,7 @@ const morganLogger = require("morgan");
 const bcrypt = require("bcryptjs"); // added
 const jwt = require("jsonwebtoken");
 const demoRouter = require("../allRoutes/demoRoutes");
-const demooRouter = require("../allRoutes/demoRoutes");
+// const demooRouter = require("../allRoutes/demoRoutes");
 const protectedRTS = require("../allRoutes/protectedRoutes");
 const db = require("../data/dbconfig");
 
@@ -18,14 +18,20 @@ server.use(cors());
 server.use(morganLogger("short"));
 server.use(express.json());
 server.use("/demo/api", demoRouter);
-server.use("/demoo/api", demooRouter);
-server.use("/api/protected/", protectedRTS);
+// server.use("/demoo/api", demooRouter);
+server.use("/api/", protectedRTS);
+
+
+
+//+++++++++++++++++++++++++++++++++++++
+//Endpoints
+//+++++++++++++++++++++++++++++++++++++
 
 server.get("/", (req, res) => {
   res.status(200).send(`API working.\n CheckRoute\n Test Route!`);
 });
 
-//Endpoints
+
 server.post("/api/register", (req, res) => {
   const userInfo = req.body;
   console.log(userInfo);
@@ -73,7 +79,7 @@ server.post("/api/login", (req, res) => {
         const token = generateUserToken(user);
         console.log("this is the token", token);
         res
-          .status(200)
+          .status(201)
           .json({ message: `Welcome ${user.username} !`, token: token });
       }
     })
@@ -82,7 +88,7 @@ server.post("/api/login", (req, res) => {
     });
 });
 
-function protected(req, res, next) {
+function functProtected(req, res, next) {
   const token = req.headers.authorization;
 
   if (token) {
@@ -99,13 +105,13 @@ function protected(req, res, next) {
   }
 }
 
-server.get("/api/users", protected, (req, res) => {
-  if (protected) {
+server.get("/api/users", functProtected, (req, res) => {
+  if (functProtected) {
     db("users")
       .then(allUsers => {
         res.status(200).json(allUsers);
       })
-      .catch(err => {
+      .catch(err => {s
         res.status(500).json({ error: `failed to return Users!` });
       });
   } else {
