@@ -6,7 +6,7 @@ const morganLogger = require("morgan");
 const bcrypt = require("bcryptjs"); // added
 const jwt = require("jsonwebtoken");
 const demoRouter = require("../allRoutes/demoRoutes");
-const demooRouter = require("../allRoutes/demoRoutes");
+// const demooRouter = require("../allRoutes/demoRoutes");
 const protectedRTS = require("../allRoutes/protectedRoutes");
 const db = require("../data/dbconfig");
 
@@ -18,14 +18,20 @@ server.use(cors());
 server.use(morganLogger("short"));
 server.use(express.json());
 server.use("/demo/api", demoRouter);
-server.use("/demoo/api", demooRouter);
+// server.use("/demoo/api", demooRouter);
 server.use("/api/", protectedRTS);
+
+
+
+//+++++++++++++++++++++++++++++++++++++
+//Endpoints
+//+++++++++++++++++++++++++++++++++++++
 
 server.get("/", (req, res) => {
   res.status(200).send(`API working.\n CheckRoute\n Test Route!`);
 });
 
-//Endpoints
+
 server.post("/api/register", (req, res) => {
   const userInfo = req.body;
   console.log(userInfo);
