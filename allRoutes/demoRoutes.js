@@ -11,7 +11,7 @@ router.get('/books', (req, res) => {
   
     db('books')
     .then(allBooks => {
-            console.log('books get request working');
+            // console.log('books get request working');
             if (!allBooks) {
                 res.status(404).json({ Error: 'No Books Found/Availible'});
             } else {
