@@ -132,17 +132,15 @@ router.get("/books/:id/all", (req, res) => {
           });
 
           console.log("this is converted Review", convertedReview);
-          res
-            .status(200)
-            .json({
-              id: thisBook[0].id,
-              title: thisBook[0].title,
-              author: thisBook[0].author,
-              publisher: thisBook[0].publisher,
-              summary: thisBook[0].summary,
-              true: thisBook[0].true,
-              bookReviews: convertedReview
-            });
+          res.status(200).json({
+            id: thisBook[0].id,
+            title: thisBook[0].title,
+            author: thisBook[0].author,
+            publisher: thisBook[0].publisher,
+            summary: thisBook[0].summary,
+            true: thisBook[0].true,
+            bookReviews: convertedReview
+          });
         })
         .catch(err =>
           res
@@ -279,7 +277,7 @@ router.delete("/reviews/:id", (req, res) => {
       console.log(`Review with id:${id} found!`);
       db("reviews")
         .where("id", id)
-        .truncate()
+        .del()
         .then(result => {
           if (result) {
             console.log(`Review with id: ${id} Deleted!`);
