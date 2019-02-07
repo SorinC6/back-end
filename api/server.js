@@ -19,7 +19,7 @@ server.use(morganLogger("short"));
 server.use(express.json());
 server.use("/demo/api", demoRouter);
 server.use("/demoo/api", demooRouter);
-server.use("/api/protected/", protectedRTS);
+server.use("/api/", protectedRTS);
 
 server.get("/", (req, res) => {
   res.status(200).send(`API working.\n CheckRoute\n Test Route!`);
@@ -72,7 +72,7 @@ server.post("/api/login", (req, res) => {
       if (user && bcrypt.compareSync(creds.password, user.password)) {
         const token = generateUserToken(user);
         res
-          .status(200)
+          .status(201)
           .json({ message: `Welcome ${user.username} !`, token: token });
       } else {
         res.status(401).json({ message: `You are not authorized to login!` });
@@ -83,7 +83,7 @@ server.post("/api/login", (req, res) => {
     });
 });
 
-function protected(req, res, next) {
+function functProtected(req, res, next) {
   const token = req.headers.authorization;
 
   if (token) {
@@ -100,13 +100,13 @@ function protected(req, res, next) {
   }
 }
 
-server.get("/api/users", protected, (req, res) => {
-  if (protected) {
+server.get("/api/users", functProtected, (req, res) => {
+  if (functProtected) {
     db("users")
       .then(allUsers => {
         res.status(200).json(allUsers);
       })
-      .catch(err => {
+      .catch(err => {s
         res.status(500).json({ error: `failed to return Users!` });
       });
   } else {
