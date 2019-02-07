@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 
-function protected(req, res, next) {
+function functProtected(req, res, next) {
     const token = req.headers.authorization;
   
     if (token) {
@@ -23,10 +23,10 @@ function protected(req, res, next) {
   
 
 //++++++++++++++++++++++++++++++++++++++++++
-   //  All protected GET endpoints
+   //  All functProtected GET endpoints
 //++++++++++++++++++++++++++++++++++++++++++++
 
-router.get('/books', (req, res) => {
+router.get('/books', functProtected, (req, res) => {
   
     db('books')
     .then(allBooks => {
@@ -43,7 +43,7 @@ router.get('/books', (req, res) => {
 });
 
 
-router.get('/users', protected, (req, res) => {
+router.get('/users', functProtected, (req, res) => {
     console.log('request working');
     db('users')
         .then(allUsers => {
@@ -58,7 +58,7 @@ router.get('/users', protected, (req, res) => {
         });
 });
 
-router.get('/reviews', protected, (req, res) => {
+router.get('/reviews', functProtected, (req, res) => {
     db('reviews')
     .then(allReviews => {
         console.log('reviews get request working');
@@ -77,7 +77,7 @@ router.get('/reviews', protected, (req, res) => {
 // All get by Id endpoints
 //++++++++++++++++++++++++++++++++++++++++++++
 
-router.get('/users/:id', protected, (req, res) => {
+router.get('/users/:id', functProtected, (req, res) => {
     const { id } = req.params;
     db('users').where({ id }).first().then( thisUser => {
         if (thisUser) {
@@ -89,7 +89,7 @@ router.get('/users/:id', protected, (req, res) => {
     .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
 });
 
-router.get('/reviews/:id', protected, (req, res) => {
+router.get('/reviews/:id', functProtected, (req, res) => {
     const { id } = req.params;
     db('reviews').where({ id }).first().then( thisUser => {
         if (thisUser) {
@@ -101,7 +101,7 @@ router.get('/reviews/:id', protected, (req, res) => {
     .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
 });
 
-router.get('/books/:id', protected, (req, res) => {
+router.get('/books/:id', functProtected, (req, res) => {
     const { id } = req.params;
     db('books').where({ id }).first().then( thisBook => {
         if (thisBook) {
@@ -118,7 +118,7 @@ router.get('/books/:id', protected, (req, res) => {
 // All post endpoints -- post book and post reviews
 //++++++++++++++++++++++++++++++++++++++++++++
 
-  router.post('/books', protected, (req,res) => {
+  router.post('/books', functProtected, (req,res) => {
     const { title, author, publisher, summary } = req.body;
     const bookInfo = req.body;
     const { id } = req.params;
@@ -149,7 +149,7 @@ router.get('/books/:id', protected, (req, res) => {
             });
 });
 
-router.post('/reviews', protected, (req,res) => {
+router.post('/reviews', functProtected, (req,res) => {
     const { review, rating, reviewer, books_id } = req.body;
     const reviewInfo = { review, rating, reviewer, books_id  };
     // const { id } = req.params;
@@ -189,7 +189,7 @@ router.post('/reviews', protected, (req,res) => {
 // All DELETE  endpoints -- 
 //++++++++++++++++++++++++++++++++++++++++++++
 
-router.delete('/books/:id', protected, (req,res) => {
+router.delete('/books/:id', functProtected, (req,res) => {
     const { id } = req.params;
 
     db('books').where('id', id).first().then(book => {
@@ -209,7 +209,7 @@ router.delete('/books/:id', protected, (req,res) => {
     });
   });
 
-  router.delete('/reviews/:id', protected, (req,res) => {
+  router.delete('/reviews/:id', functProtected, (req,res) => {
     const { id } = req.params;
 
     db('reviews').where('id', id).first().then(review => {
