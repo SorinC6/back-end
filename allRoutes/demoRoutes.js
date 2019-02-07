@@ -8,18 +8,6 @@ const router = express.Router();
 router.get("/books", (req, res) => {
   db("books")
     .then(allBooks => {
-
-            // console.log('books get request working');
-            if (!allBooks) {
-                res.status(404).json({ Error: 'No Books Found/Availible'});
-            } else {
-                res.status(200).json(allBooks);
-            }
-        })
-        .catch(err => {
-            res.status(500).json({ Error: 'Error! Please try again.'})
-        });
-
       if (!allBooks) {
         res.status(404).json({ Error: "No Books Found/Availible" });
       } else {
@@ -29,7 +17,6 @@ router.get("/books", (req, res) => {
     .catch(err => {
       res.status(500).json({ Error: "Error! Please try again." });
     });
-
 });
 
 router.get("/reviews", (req, res) => {
@@ -123,44 +110,51 @@ router.get("/books/:id", (req, res) => {
     });
 });
 
+router.get("/books/:id/all", (req, res) => {
+  const { id } = req.params;
+  db("books")
+    .where("id", id)
+    .then(thisBook => {
+      console.log(thisBook);
+      db("reviews")
+        .where({ books_id: req.params.id })
+        .then(eachReview => {
+          console.log(eachReview);
+          const convertedReview = eachReview.map(w => {
+            console.log("w", w);
+            return w;
+            // {id: w.id}
+            // ,
+            // review = w.review,
+            // rating = w.rating,
+            // reviewer = w.reviewer,
+            // books_id = w.books_id
+          });
 
-router.get('/books/:id/all', (req, res) => {
-    const { id } = req.params;
-    db('books').where('id', id ).then( thisBook => {
-        console.log(thisBook);
-        db('reviews')
-                .where({ books_id: req.params.id })
-                .then(eachReview => {
-                    console.log(eachReview);
-                const convertedReview = eachReview.map(w => {
-                 console.log("w",w);
-                 return w;
-                    // {id: w.id}
-                    // , 
-                    // review = w.review, 
-                    // rating = w.rating, 
-                    // reviewer = w.reviewer, 
-                    // books_id = w.books_id 
-                });
-
-                console.log('this is converted Review',convertedReview);
-                res.status(200)
-                    .json({ id: thisBook[0].id, 
-                        title: thisBook[0].title, 
-                        author: thisBook[0].author, 
-                        publisher: thisBook[0].publisher, 
-                        summary: thisBook[0].summary, 
-                        true: thisBook[0].true, 
-                        bookReviews: convertedReview });
-
-        }).catch(err => res.status(404).json({ Error: "No Reviews found for that book in the system "}))
-                    //    res.status(200).json(thisBook);
-        
+          console.log("this is converted Review", convertedReview);
+          res
+            .status(200)
+            .json({
+              id: thisBook[0].id,
+              title: thisBook[0].title,
+              author: thisBook[0].author,
+              publisher: thisBook[0].publisher,
+              summary: thisBook[0].summary,
+              true: thisBook[0].true,
+              bookReviews: convertedReview
+            });
+        })
+        .catch(err =>
+          res
+            .status(404)
+            .json({ Error: "No Reviews found for that book in the system " })
+        );
+      //    res.status(200).json(thisBook);
     })
-    .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
+    .catch(err => {
+      res.status(500).json({ Error: "Error! Please try again." });
+    });
 });
-
-
 
 //++++++++++++++++++++++++++++++++++++++++++
 // All post endpoints -- post book and post reviews
