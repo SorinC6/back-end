@@ -115,6 +115,46 @@ router.get('/books/:id', functProtected, (req, res) => {
 
 
 //++++++++++++++++++++++++++++++++++++++++++
+// All get by Id endpoints
+//++++++++++++++++++++++++++++++++++++++++++++
+router.get('/books/:id/all', functProtected, (req, res) => {
+    const { id } = req.params;
+    db('books').where('id', id ).then( thisBook => {
+        console.log(thisBook);
+        db('reviews')
+                .where({ books_id: req.params.id })
+                .then(eachReview => {
+                    console.log(eachReview);
+                const convertedReview = eachReview.map(w => {
+                 console.log("w",w);
+                 return w;
+                    // {id: w.id}
+                    // , 
+                    // review = w.review, 
+                    // rating = w.rating, 
+                    // reviewer = w.reviewer, 
+                    // books_id = w.books_id 
+                });
+
+                console.log('this is converted Review',convertedReview);
+                res.status(200)
+                    .json({ id: thisBook[0].id, 
+                        title: thisBook[0].title, 
+                        author: thisBook[0].author, 
+                        publisher: thisBook[0].publisher, 
+                        summary: thisBook[0].summary, 
+                        true: thisBook[0].true, 
+                        bookReviews: convertedReview });
+
+        }).catch(err => res.status(404).json({ Error: "No Reviews found for that book in the system "}))
+                    //    res.status(200).json(thisBook);
+        
+    })
+    .catch(err => { res.status(500).json({ Error: 'Error! Please try again.'})});
+});
+
+
+//++++++++++++++++++++++++++++++++++++++++++
 // All post endpoints -- post book and post reviews
 //++++++++++++++++++++++++++++++++++++++++++++
 
@@ -233,5 +273,91 @@ router.delete('/books/:id', functProtected, (req,res) => {
 //++++++++++++++++++++++++++++++++++++++++++
 // All UPDATE  endpoints -- 
 //++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+router.put("/books/:id", functProtected, (req, res) => {
+    const { id } = req.params;
+    // const { review, rating, reviewer, books_id } = req.body;
+    // const reviewInfo = { review, rating, reviewer, books_id  };
+    // const {} = req.body;
+    const changes = req.body;
+  
+    db('books').where({ id }).first().then( result => {
+        if (!result) {
+            res
+            .status(404)
+            .json({ Error: `The book with the specified ID: ${id} does not exist.` });
+        }
+        if (!changes.title || !changes.author || !changes.publisher || !changes.summary) {
+            res.status(400).json({
+              Error: `Please provide title author Publisher and summary you'd like to Update.`
+            });
+          }
+          if (result) {
+              db('books').where('id', id).update(changes).then(editedBook => {
+                  if(editedBook){
+                      res.status(203).json({editedBook});
+                  } else {
+                    res.status(400).json({
+                        error: "Please check your input and try to edit the book again."
+                      });
+                  }
+    
+              }).catch(err =>
+                res
+                  .status(500)
+                  .json({ error: "The post information could not be modified." }));
+
+          }
+    }).catch(err =>
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+      );
+  });
+
+  router.put("/reviews/:id", functProtected, (req, res) => {
+    const { id } = req.params;
+    // const { review, rating, reviewer } = req.body;
+    // const reviewInfo = { review, rating, reviewer };
+    // const {} = req.body;
+    const changes = req.body;
+  
+    db('reviews').where({ id }).first().then( result => {
+        if (!result) {
+            res
+            .status(404)
+            .json({ Error: `The review with the specified ID: ${id} does not exist.` });
+        }
+        if (!changes.review || !changes.rating || !changes.reviewer ) {
+            res.status(400).json({
+              Error: `Please provide review rating and reviewer you'd like to Update.`
+            });
+          }
+          if (result) {
+              db('reviews').where('id', id).update(changes).then(editedReview => {
+                  if(editedReview){
+                      res.status(203).json({editedReview});
+                  } else {
+                    res.status(400).json({
+                        error: "Please check your input and try to edit the review again."
+                      });
+                  }
+    
+              }).catch(err =>
+                res
+                  .status(500)
+                  .json({ error: "The post information could not be modified." }));
+
+          }
+    }).catch(err =>
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+      );
+  });
+
+
 
   module.exports = router;
