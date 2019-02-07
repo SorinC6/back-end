@@ -77,11 +77,10 @@ server.post("/api/login", (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(creds.password, user.password)) {
         const token = generateUserToken(user);
+        console.log("this is the token", token);
         res
           .status(201)
           .json({ message: `Welcome ${user.username} !`, token: token });
-      } else {
-        res.status(401).json({ message: `You are not authorized to login!` });
       }
     })
     .catch(err => {
