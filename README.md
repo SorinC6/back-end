@@ -10,18 +10,14 @@
 | GET    | /api/users | If the user is logged in, respond with an array of all the users contained in the database. If the user is not logged in repond with the err code. | --- |
 | GET    | /api/books | If the user is logged in, respond with an array of all the books contained in the database. If the user is not logged in repond with the err code. | --- |
 | GET    | /api/reviews | If the user is logged in, respond with an array of all the reviews contained in the database. If the user is not logged in repond with the err code. | --- |
-| GET    | /api/users/userID | If the user is logged in, and is the correct user, respond with an object with the user user info. If the user is not logged in repond with the err code. | --- |
-| GET    | /api/reviews/userID | If the user is logged in, and is the correct user, respond with an object with the specific review info. If the user is not logged in repond with the err code. | --- |
-| GET    | /api/books/userID | If the user is logged in, and is the correct user, respond with an object with the specific book info. If the user is not logged in repond with the err code. | --- |
-| GET    | /api/books/userID/all | If the user is logged in, and is the correct user, respond with an object with the specific book info. And an attached array of all of the availible revews in the database for that book. If the user is not logged in repond with the err code. | --- |
-
-| DELETE | /api/books/userID | If the user is logged in, responds with the statment `Book with id: ${userID} Deleted!`. If the user is not logged-in or does not contain the entry respond with the err code. | --- |
-| DELETE | /api/reviews/userID | If the user is logged in, responds with the statment `Review with id: ${userID} Deleted!`. If the user is not logged-in or does not contain the entry respond with the err code. | --- |
-
-| PUT    | /api/books/userID | If the user is logged in, responds with an object with the users entry. If the user is not logged-in or does not contain the entry respond with the err code. | { "title": "fgfd dfgdfg","author": "pgfd dfass gfdf","publisher": "first fsd ", "summary": "ldf as d t" } |
-
-| PUT    | /api/reviews/userID | If the user is logged in, responds with an object with the users entry. If the user is not logged-in or does not contain the entry respond with the err code. | { "review": "fgfd dfgdfg","rating": "pgfd dfass gfdf","reviewer": "first fsd ", "books_id": 1 } |
-
+| GET    | /api/users/:id | If the user is logged in, and is the correct user, respond with an object with the user user info. If the user is not logged in repond with the err code. | --- |
+| GET    | /api/reviews/:id | If the user is logged in, and is the correct user, respond with an object with the specific review info. If the user is not logged in repond with the err code. | --- |
+| GET    | /api/books/:id | If the user is logged in, and is the correct user, respond with an object with the specific book info. If the user is not logged in repond with the err code. | --- |
+| GET    | /api/books/:id/all | If the user is logged in, and is the correct user, respond with an object with the specific book info. And an attached array of all of the availible revews in the database for that book. If the user is not logged in repond with the err code. | --- |
+| DELETE | /api/books/:id| If the user is logged in, responds with the statment `Book with id: ${userID} Deleted!`. If the user is not logged-in or does not contain the entry respond with the err code. | --- |
+| DELETE | /api/reviews/:id | If the user is logged in, responds with the statment `Review with id: ${userID} Deleted!`. If the user is not logged-in or does not contain the entry respond with the err code. | --- |
+| PUT    | /api/books/:id | If the user is logged in, responds with an object with the users entry. If the user is not logged-in or does not contain the entry respond with the err code. | { "title": "fgfd dfgdfg","author": "pgfd dfass gfdf","publisher": "first fsd ", "summary": "ldf as d t" } |
+| PUT    | /api/reviews/:id | If the user is logged in, responds with an object with the users entry. If the user is not logged-in or does not contain the entry respond with the err code. | { "review": "fgfd dfgdfg","rating": "pgfd dfass gfdf","reviewer": "first fsd ", "books_id": 1 } |
 | POST   | /api/books | If the user is logged in, respond with an id of the new entry. If the user is not logged in repond with the err code. |{ "title": "fgfd dfgdfg","author": "pgfd dfass gfdf","publisher": "first fsd " }|
 | POST   | /api/reviews | If the user is logged in, respond with an id of the new entry. If the user is not logged in repond with the err code. | { "review": "fgfd dfgdfg","rating": "pgfd dfass gfdf","reviewer": "first fsd ", "books_id": 1 }|
 
@@ -102,48 +98,35 @@ The JWT payload will look like this:
 ## register/Signup =
 |endpoint:
 |post request to:
-|`/api/register`
-|
+|`/api/register`|
 |expects an object with  a username(string), password(string), 
-and role(integer either 0 or 1, --0 for customers and 1 for admin--)
-|
+and role(integer either 0 or 1, --0 for customers and 1 for admin--)|
 |{
 	"username":"me",
 	"password":"new",
 	"role":1
 	
-}
-|
-
+}|
 ## login/Signin =
-|endpoint:
-|post request to:
-|`/api/login`
-
-|expects an object with  a username(string), password(string), 
-it generates a token that can be either saved in stat or save locally as the
-|
+|endpoint:|post request to:|`/api/login`|expects an object with  a username(string), password(string), 
+it generates a token that can be either saved in stat or save locally as the|
 {
 	"username":"me",
 	"password":"new",
     "role":1
 	
 }|
-
 |{
 	"username": "1",
 	"password": "1",
     "role": 0
 	
-}|
-|{
+}||{
 	"username": "kenneth",
 	"password": "password",
     "role": 1
 	
-}|
-
-|
+}||
 |/api/users|
 [
     {
@@ -153,26 +136,17 @@ it generates a token that can be either saved in stat or save locally as the
         "role": 1,
         "true": null
     }
-]
-|
+]|
 There are currently Demo endpoint you can use to get reviews and books 
-get:
-|`/demo/api/reviews`
+get:|`/demo/api/reviews`|
 to post reviews pasws an abject with the review(string), rating(integer), reviewer(string), and books_id(string)properties included. it  should ook like the following
-|`/demo/api/reviews`
-|{
+|`/demo/api/reviews`|{
 	"review": "Sdf gfah dd gsdf",
 	"rating": 4,
 	"reviewer": "juste",
 	"books_id" : 1
 	
-}
-|to update a review use endpoint `/demo/api/reviews/:id` 
-|`/demo/api/reviews/4` 
-|you will need to include review(string), rating(integer) and reviewer(string).
-|example below:
-
-|{
+}|to update a review use endpoint `/demo/api/reviews/:id` |`/demo/api/reviews/4` |you will need to include review(string), rating(integer) and reviewer(string).|example below:|{
       
         "review": "everything newer",
         "rating": 5,
@@ -180,11 +154,9 @@ to post reviews pasws an abject with the review(string), rating(integer), review
     }
 
 
-|`/demo/api/books`
-|the id is automatically incremented. 
+|`/demo/api/books`|the id is automatically incremented. 
 but you must implement string values for title, author, publisher.
-when posting a books info the Summary section(string data) is optional and null will be place if no data is put in.
-|
+when posting a books info the Summary section(string data) is optional and null will be place if no data is put in.|
 |{
         "title": "C++ for all",
         "author": "Prof. SmartyPants",
@@ -195,9 +167,7 @@ when posting a books info the Summary section(string data) is optional and null 
 To GET a specific book 
 |`/demo/api/books/:id`
 |example:
-|`/demo/api/books/1`
-|
-[
+|`/demo/api/books/1`|[
     {
         "id": 1,
         "title": "FirstBook",
@@ -222,16 +192,11 @@ To GET a specific book
         "summary": "more stuff",
         "true": null
     }
-]
-|
+]|
 
 
-|`/demo/api/users/:id`
-|to get request specific user data you will need the id of the user,
-or simple input the beloww to get them all.
-|`/demo/api/users`
-|
-|The user is an aray stucture of user objects like whats listed below.|
+|`/demo/api/users/:id`|to get request specific user data you will need the id of the user,
+or simple input the beloww to get them all.|`/demo/api/users`||The user is an aray stucture of user objects like whats listed below.|
 
 [
     {
